@@ -1,0 +1,29 @@
+{
+  "name": "codex-conare",
+  "version": "1.0.0",
+  "description": "Conare for OpenAI Codex — instant project brief injected at session start via a native SessionStart hook.",
+  "type": "module",
+  "bin": {
+    "codex-conare": "bin/install.js"
+  },
+  "files": [
+    "bin/",
+    "hooks/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/conareai/codex-conare.git"
+  },
+  "homepage": "https://conare.ai",
+  "keywords": ["codex", "memory", "context", "hooks", "conare"],
+  "author": "Conare (https://conare.ai)",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --check bin/install.js && node --check hooks/session-start.mjs && node test/smoke.mjs"
+  }
+}
