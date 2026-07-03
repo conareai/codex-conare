@@ -14,7 +14,7 @@ mkdirSync(codexDir, { recursive: true });
 // Pre-existing foreign hook the installer must preserve untouched.
 const foreign = {
   matcher: "startup",
-  hooks: [{ type: "command", command: ["echo", "someone-elses-hook"], timeout: 5 }],
+  hooks: [{ type: "command", command: "echo someone-elses-hook", timeout: 5 }],
 };
 writeFileSync(
   join(codexDir, "hooks.json"),
@@ -29,10 +29,9 @@ const run = (...args) =>
 run("install");
 let data = JSON.parse(readFileSync(join(codexDir, "hooks.json"), "utf8"));
 assert.equal(data.hooks.SessionStart.length, 2, "foreign hook preserved + ours added");
-assert.ok(
-  data.hooks.SessionStart[1].hooks[0].command.join(" ").includes("codex-session-start"),
-  "our hook registered",
-);
+const registeredCommand = data.hooks.SessionStart[1].hooks[0].command;
+assert.equal(typeof registeredCommand, "string", "command must be a shell string (Codex rejects argv arrays)");
+assert.ok(registeredCommand.includes("codex-session-start"), "our hook registered");
 assert.ok(existsSync(join(home, ".conare", "hooks", "codex-session-start.mjs")), "script copied");
 
 // re-install is idempotent
