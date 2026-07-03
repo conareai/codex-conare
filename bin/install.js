@@ -80,7 +80,10 @@ function install() {
     hooks: [
       {
         type: "command",
-        command: ["node", INSTALLED_SCRIPT],
+        // Codex's hooks.json wants a shell string, NOT an argv array —
+        // an array fails to parse ("invalid type: sequence, expected a string")
+        // and the whole hooks file is rejected.
+        command: `node "${INSTALLED_SCRIPT}"`,
         timeout: 5,
         statusMessage: "Loading Conare project brief",
       },
